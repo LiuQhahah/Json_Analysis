@@ -1,5 +1,7 @@
 package liuqhahahh.njupt.edu.cn.json_analysis;
 
+import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,12 +16,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.CacheResponse;
 import java.util.Map;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -31,8 +36,12 @@ public class MainActivity extends AppCompatActivity {
     private String url = "http://m.weather.com.cn/data/101010100.html";
     protected CharSequence weatherResult = null;
 
-   private final OkHttpClient client = new OkHttpClient();
+    ///private final OkHttpClient client4cache = new OkHttpClient() ;
+   //private final OkHttpClient client = new OkHttpClient();
    private final Gson gson = new Gson();
+    private OkHttpClient client4cache;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +95,68 @@ public class MainActivity extends AppCompatActivity {
         /**
          *  通过JsonReader解析Json对象
          */
-        jsonReaderTest();
+        //jsonReaderTest();
+
+
+
+
+
+        //okhttp    添加缓存
+
+        int cacheSize = 10*1024*1024;//10 MiB
+        String okhttpCachePath = getApplication().getCacheDir().getPath()+ File.separator+"okhttp";
+        File   okhttpCache = new File(okhttpCachePath);
+        if (!okhttpCache.exists()){
+            okhttpCache.mkdirs();
+        }
+
+        Cache cache = new Cache(okhttpCache,cacheSize);
+
+        client4cache = new OkHttpClient.Builder()
+                .cache(cache)
+                .build();
+
+        /**
+         * okhttp 4 cache
+         *
+         */
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Request request4cache = new Request.Builder()
+                        .url("http://publicobject.com/helloworld.txt")
+                        .build();
+
+
+                try {
+                    Response response4cache1 = client4cache.newCall(request4cache).execute();
+
+                if (!response4cache1.isSuccessful()) throw new IOException("Unexpected code"+response4cache1);
+
+                    String response4cache1Body = response4cache1.body().string();
+                    Log.i(TAG,"Response4cache 1 response :"+response4cache1);
+                    Log.i(TAG,"Response4cache 1 cache response :"+response4cache1.cacheResponse());
+                    Log.i(TAG,"Response4cache 1 network response :"+response4cache1.networkResponse());
+
+
+                    Response response4cache2 = client4cache.newCall(request4cache).execute();
+                    if (!response4cache2.isSuccessful()) throw new IOException("Unexpected code"+response4cache2);
+
+                    String response4cache2Body = response4cache2.body().string();
+                    Log.i(TAG,"Response4cache 2 response :"+response4cache2);
+                    Log.i(TAG,"Response4cache 2 cache response :"+response4cache2.cacheResponse());
+                    Log.i(TAG,"Response4cache 2 network response :"+response4cache2.networkResponse());
+
+
+                    Log.i(TAG,"Response4cache 2 equals Response4cache 1 ?"+response4cache2Body.equals(response4cache1Body));
+
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
     }
 
     static class Gist{
@@ -101,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
     /**
      *  通过JsonReader解析Json对象
      */
-    private void jsonReaderTest(){
+   /* private void jsonReaderTest(){
         String jsonData = "[{\"username\":\"name01\",\"userId\":001},{\"username\":\"name02\",\"userId\":002}]";
 
         com.google.gson.stream.JsonReader reader = new com.google.gson.stream.JsonReader(new StringReader(jsonData));
@@ -126,5 +196,24 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
+    }*/
+
+    /**
+     * okhttp 4 cache
+     * @param cacheDirectory
+     */
+ /*  public void CacheResponse(File cacheDirectory){
+       int cacheSize = 10*1024*1024;//10 MiB
+       String okhttpCachePath = getCacheDir().getPath()+ File.separator+"okhttp";
+       File   okhttpCache = new File(okhttpCachePath);
+       if (!okhttpCache.exists()){
+           okhttpCache.mkdirs();
+       }
+
+       Cache cache = new Cache(okhttpCache,cacheSize);
+
+       client4cache= new OkHttpClient.Builder()
+               .cache(cache)
+               .build();
+   }*/
 }
