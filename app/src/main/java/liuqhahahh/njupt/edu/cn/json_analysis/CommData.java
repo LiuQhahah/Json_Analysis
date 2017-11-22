@@ -5,58 +5,54 @@ import android.util.Log;
 import java.util.List;
 
 /**
+ *
  * Created by root on 17-11-21.
  */
 
 public class CommData {
 
 
-
-    private String retCode;
-    private List<CloudantData> rows;
-
-    public String getRetCode() {
-        return retCode;
-    }
-
-    public void setRetCode(String retCode) {
-        this.retCode = retCode;
-    }
-
-    public List<CloudantData> getCloudantData() {
+    public List<CloudantData> getRows() {
         return rows;
     }
 
-    public void setCloudantData(List<CloudantData> cloudantData) {
-        this.rows = cloudantData;
+    public void setRows(List<CloudantData> rows) {
+        this.rows = rows;
+    }
+
+    private List<CloudantData> rows;
+
+    public String getTotal_rows() {
+        return total_rows;
+    }
+
+    public void setTotal_rows(String total_rows) {
+        this.total_rows = total_rows;
+    }
+
+    public String getOffset() {
+        return offset;
+    }
+
+    public void setOffset(String offset) {
+        this.offset = offset;
     }
 
 
-    public class Rows{
-        public String id;
-        public String key;
-        public String value;
-        public Doc doc;
-    }
-    public class Doc{
-        public String _id;
-        public String _key;
-        public String topic;
-        public Payload payload;
-    }
-    public class Payload{
-        public D d;
+
+    private String total_rows;
+    private String offset;
+
+
+   /* public List<Rows> getRows() {
+        return rows;
     }
 
-    public class D{
-        public String temp;
-        public String humidity;
-        public Location location;
+    public void setRows(List<Rows> rows) {
+        this.rows = rows;
     }
-    public class Location{
-        public String latitude;
-        public String longitude;
-    }
+
+    private List<Rows> rows;*/
 
 
 

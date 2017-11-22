@@ -29,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
 
 
    private final String url = "https://fb2e1a82-8890-4143-810d-e5c79f44a611-bluemix.cloudant.com/nodered/_all_docs?include_docs=true&limit=100";
+    private String humidity;
+    private String temp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,22 +107,36 @@ public class MainActivity extends AppCompatActivity {
                CommData commData  = gson.fromJson(responseString,CommData.class);
 
 
-
-               List<CloudantData> cloudantDataList = commData.getCloudantData();
+               List<CloudantData> cloudantDataList = commData.getRows();
 
                Log.i(TAG,"cloudantDataList size:"+cloudantDataList.size());
                for (int i= 0;i<cloudantDataList.size();i++){
-                   final String id = cloudantDataList.get(i).getId();
-                   final String key = cloudantDataList.get(i).getKey();
+                   final String temp = cloudantDataList.get(i).doc.payload.d.getTemp();
+                   final String humidity = cloudantDataList.get(i).doc.payload.d.getHumidity();
                    //在主线程中修改UI
                    runOnUiThread(new Runnable() {
                        @Override
                        public void run() {
                            //进行图标刷新。。。。
-                           Log.i(TAG,"id:"+id+"\n key:"+key);
+                           Log.i(TAG,"temp:"+temp+"\n humidity:"+humidity);
                        }
                    });
                }
+
+            /*   List<Rows> rows =  commData.getRows();
+               Log.i(TAG,"cloudantDataList size:"+rows.size());
+               for (int i= 0;i<rows.size();i++){
+                    temp =rows.get(i).getDoc().getPayload().getD().getTemp();
+                    humidity = rows.get(i).getDoc().getPayload().getD().getHumidity();
+                   //在主线程中修改UI
+                   runOnUiThread(new Runnable() {
+                       @Override
+                       public void run() {
+                           //进行图标刷新。。。。
+                           Log.i(TAG,"temp:"+temp+"\n humidity:"+humidity);
+                       }
+                   });
+               }*/
            }
        });
    }
