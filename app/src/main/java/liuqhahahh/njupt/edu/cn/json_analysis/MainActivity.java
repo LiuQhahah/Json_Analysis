@@ -1,25 +1,15 @@
 package liuqhahahh.njupt.edu.cn.json_analysis;
 
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-
 
 import com.google.gson.Gson;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
-import okhttp3.CacheControl;
-import okhttp3.Call;
-import okhttp3.Callback;
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
@@ -37,54 +27,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
-        /**
-         * 主线程中不给进行网络请求，开启子线程：运行json函数
-         */
-
-       /* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Request request = new Request.Builder()
-                        .url("https://api.github.com/gists/c2a7c39532239ff261be")
-                        .build();
-                Response response = null;
-                try {
-                    response = client.newCall(request).execute();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (!response.isSuccessful())
-                    try {
-                        throw new IOException("Unexpected code "+response);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-
-                // 最为关键！！的方法
-                Gist gist = gson.fromJson(response.body().charStream(),Gist.class);
-                //Log.i(TAG,"response:"+response.body().);
-                for (Map.Entry<String,GistFile> entry:gist.files.entrySet()){
-                    Log.i(TAG,entry.getKey()+":"+entry.getValue().content);
-                }
-            }
-        }).start();
-
-*/
-
-       getCloudantData();
+      CommData commData = new CommData();
+      List<CloudantData> cloudantDataList = commData.getCloudantData(url);
+      Log.i(TAG,"cloudantDataList size:"+cloudantDataList.size());
     }
 
-   /* static class Gist{
-        Map<String,GistFile> files;
-    }
 
-    static class GistFile{
-        String content;
-    }*/
 
-   private void getCloudantData(){
+  /* private void getCloudantData(){
        Request request   = new Request.Builder()
                .url(url)
 
@@ -123,21 +73,8 @@ public class MainActivity extends AppCompatActivity {
                    });
                }
 
-            /*   List<Rows> rows =  commData.getRows();
-               Log.i(TAG,"cloudantDataList size:"+rows.size());
-               for (int i= 0;i<rows.size();i++){
-                    temp =rows.get(i).getDoc().getPayload().getD().getTemp();
-                    humidity = rows.get(i).getDoc().getPayload().getD().getHumidity();
-                   //在主线程中修改UI
-                   runOnUiThread(new Runnable() {
-                       @Override
-                       public void run() {
-                           //进行图标刷新。。。。
-                           Log.i(TAG,"temp:"+temp+"\n humidity:"+humidity);
-                       }
-                   });
-               }*/
+
            }
        });
-   }
+   }*/
 }

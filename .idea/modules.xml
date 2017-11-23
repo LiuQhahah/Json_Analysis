@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Json_Analysis.iml" filepath="$PROJECT_DIR$/Json_Analysis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Json_Analysis.iml" filepath="$PROJECT_DIR$/.idea/Json_Analysis.iml" />
+      <module fileurl="file://E:\workspace\Code_Android\Json_Analysis\Json_Analysis.iml" filepath="E:\workspace\Code_Android\Json_Analysis\Json_Analysis.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://E:\workspace\Code_Android\Json_Analysis\app\app.iml" filepath="E:\workspace\Code_Android\Json_Analysis\app\app.iml" />
     </modules>
   </component>
 </project>
